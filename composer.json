@@ -1,0 +1,50 @@
+{
+  "name": "alexei4er/event-ticket-store",
+  "description": "A event ticket store",
+  "license": "MIT",
+  "keywords": [
+    "event",
+    "ticket",
+    "store"
+  ],
+  "type": "library",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "illuminate/support": "^6.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^4.0",
+    "phpunit/phpunit": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Alexei4er\\EventTicketStore\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Alexei4er\\EventTicketStore\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "phpunit": "phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Alexei4er\\EventTicketStore\\ServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
