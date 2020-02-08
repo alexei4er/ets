@@ -17,10 +17,26 @@ Install via composer
 composer require alexei4er/event-ticket-store
 ```
 
+```bash
+php artisan ets:install
+```
+
+## Remove tables and migrations
+
+```bash
+php artisan ets:uninstall
+```
+
 ### Publish Configuration File
 
 ```bash
-php artisan vendor:publish --provider="Alexei4er\EventTicketStore\ServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Alexei4er\EventTicketStore\ServiceProvider" --tag="ets_config"
+```
+
+### Publish Views
+
+```bash
+php artisan vendor:publish --provider="Alexei4er\EventTicketStore\ServiceProvider" --tag="ets_views"
 ```
 
 ## Usage
@@ -29,7 +45,7 @@ CHANGE ME
 
 ## Security
 
-If you discover any security related issues, please email 
+If you discover any security related issues, please email
 instead of using the issue tracker.
 
 ## Credits
