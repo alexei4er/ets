@@ -13,30 +13,35 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('ticket_id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('company');
-            $table->string('inn', 12);
-            $table->string('ogrn', 15);
-            $table->string('rs', 20);
-            $table->string('ks', 20);
-            $table->string('bik', 9);
-            $table->string('kpp', 9)->nullable();
-            $table->string('bank');
-            $table->string('address', 750);
-            $table->string('post_address', 750);
-            $table->string('phone');
-            $table->string('general_manager');
-            $table->string('position');
-            $table->string('reason', 750);
-            $table->boolean('paid');
-            $table->timestamps();
+        if (!Schema::hasTable('orders')) {
+            Schema::create('orders', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('ticket_id');
+                $table->integer('amount')->default(1);
+                $table->string('name');
+                $table->string('email');
+                $table->enum('customer_type', ['person', 'organization']);
+                $table->string('company')->nullable();
+                $table->string('inn', 12)->nullable();
+                $table->string('ogrn', 15)->nullable();
+                $table->string('rs', 20)->nullable();
+                $table->string('ks', 20)->nullable();
+                $table->string('bik', 9)->nullable();
+                $table->string('kpp', 9)->nullable();
+                $table->string('bank')->nullable();
+                $table->string('address', 750)->nullable();
+                $table->string('post_address', 750)->nullable();
+                $table->string('phone')->nullable();
+                $table->string('general_manager')->nullable();
+                $table->string('position')->nullable();
+                $table->string('reason', 750)->nullable();
+                $table->boolean('paid')->nullable();
+                $table->string('filename', 32)->nullable();
+                $table->timestamps();
 
-            $table->foreign('ticket_id')->references('id')->on('tickets');
-        });
+                $table->foreign('ticket_id')->references('id')->on('tickets');
+            });
+        }
     }
 
     /**

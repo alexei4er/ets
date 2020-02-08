@@ -16,7 +16,8 @@
   ],
   "require": {
     "php": ">=7.2",
-    "illuminate/support": "^6.0"
+    "illuminate/support": "^6.0",
+    "dompdf/dompdf": "^0.8.4"
   },
   "require-dev": {
     "orchestra/testbench": "^4.0",

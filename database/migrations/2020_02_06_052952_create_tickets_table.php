@@ -13,15 +13,18 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('event_id');
-            $table->string('title');
-            $table->string('description');
-            $table->timestamps();
+        if (!Schema::hasTable('tickets')) {
+            Schema::create('tickets', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('event_id');
+                $table->string('title');
+                $table->string('description');
+                $table->decimal('price', 10, 2);
+                $table->timestamps();
 
-            $table->foreign('event_id')->references('id')->on('events');
-        });
+                $table->foreign('event_id')->references('id')->on('events');
+            });
+        }
     }
 
     /**
