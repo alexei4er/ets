@@ -56,11 +56,7 @@
     });
 
     $(".event-ticket-search-form").on("submit", function() {
-        if ($("input[name='customer_type']:visible:checked").val() != 'organization') {
-            $(".for_organization").hide();
-        } else {
-            $(".for_organization").show();
-        }
+        $(this).find('[data-dismiss="modal"]').click();
     });
 
     $("input[value='person']").click();

@@ -23,6 +23,7 @@ return [
         "reason" => env("ETS_COMPANY_REASON", ''),
     ],
     "robokassa" => [
+        "url" => env("ETS_ROBOKASSA_URL", 'https://auth.robokassa.ru/Merchant/Index.aspx'),
         "login" => env("ETS_ROBOKASSA_LOGIN", ''),
         "password" => env("ETS_ROBOKASSA_PASSWORD", ''),
     ],

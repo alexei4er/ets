@@ -4,17 +4,18 @@ namespace Alexei4er\EventTicketStore;
 
 use Dompdf\Dompdf;
 use Alexei4er\EventTicketStore\Models\Order;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
 class EventTicketStore
 {
     /**
-     * Creating bill in pdf format
+     * Creating bill in pdf format and saving in the local disk
      *
      * @param Order $order
-     * @return void
+     * @return string
      */
-    public function makeBill(Order $order)
+    public function makeBill(Order $order): string
     {
         $blade = view('ets_views::orders.pdf.bill', [
             'order' => $order,
@@ -24,16 +25,19 @@ class EventTicketStore
         $output = $this->renderBill($blade);
 
         Storage::disk('local')->put($order->bill_path, $output);
+
+        return $order->bill_path;
     }
 
     /**
-     * Undocumented function
+     * Generate redirect to robokassa
      *
      * @param Order $order
-     * @return void
+     * @return RedirectResponse
      */
-    public function makePayment(Order $order)
+    public function makePayment(Order $order): RedirectResponse
     {
+        $url = config('robokassa.url');
         $login = config('robokassa.login');
         $password = config('robokassa.password');
 
@@ -52,13 +56,28 @@ class EventTicketStore
         ];
         $json = json_encode($receipt);
         $crc  = md5("{$login}:{$order->sum}:{$order->id}:{$json}:{$password}");
-        $url = "https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin={$login}&" .
-            "OutSum={$order->sum}&InvId={$order->id}&Description={$order->service_name}&" .
-            "SignatureValue={$crc}&Receipt={$json}&Email={$order->email}";
-        return redirect($url);
+
+        $parameters = [
+            'MerchantLogin' => $login,
+            'OutSum' => $order->sum,
+            'InvId' => $order->id,
+            'Description' => $order->service_name,
+            'SignatureValue' => $crc,
+            'Receipt' => $json,
+            'Email' => $order->email,
+        ];
+        $parameters = http_build_query($parameters);
+
+        return redirect("{$url}?{$parameters}");
     }
 
-    protected function renderBill($blade)
+    /**
+     * Create pdf document from html
+     *
+     * @param string $blade
+     * @return string
+     */
+    protected function renderBill(string $blade): string
     {
         $dompdf = new Dompdf();
         $dompdf->set_option('isHtml5ParserEnabled', true);
